@@ -1,42 +1,40 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Rimuove il gap in alto che causa la riga nera */
+html, body, #__next {
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+body{
+    margin:0;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background-color: var(--background);
 }
+:root {
+    --background: #000000;
+    --zero: rgba(255, 255, 255, 0.3);
+    --primary: #244997;
+    --secondary: #006ad4;
+    --text: #EDEDED;
+    --third: #FFDB57;
+    --aux: #FFCB05;
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+    /* altri colori */
+}
+.logo{font-weight:700}
+.main{
+    min-height:60vh;
+    padding:32px 0;
+}
+.logo-img{
+    width:auto;
+    height:70px;
 }
