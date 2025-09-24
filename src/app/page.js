@@ -1,10 +1,7 @@
-import Image from "next/image";
-import Field from "../components/field";
+import HeroAnimation from "../components/HeroAnimation";
 
 export default function Home() {
     return (
-        <main className="main">
-            <Field></Field>
-        </main>
+        <HeroAnimation text="estudentsleague" />
     );
 }
