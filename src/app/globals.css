@@ -32,7 +32,6 @@ body{
 .logo{font-weight:700}
 .main{
     min-height:60vh;
-    padding:32px 0;
 }
 .logo-img{
     width:auto;

@@ -2,12 +2,6 @@
 
 import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-
-/**
- * HeroAnimation
- * - Mostra un titolo centrato che si "costruisce" lettera per lettera con GSAP
- * - Font: usa Audiowide già applicato globalmente in `layout.js`
- */
 export default function HeroAnimation({
   text = "estudentsleague",
   duration = 2,
@@ -69,7 +63,7 @@ export default function HeroAnimation({
           justifyContent: "center",
           alignItems: "center",
           gap: "0.02em",
-          color: "var(--primary)",
+          color: "var(--text)",
             fontFamily: "Audiowide, sans-serif",
             textTransform: "uppercase",
           textAlign: "center",
