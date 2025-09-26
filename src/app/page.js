@@ -1,7 +1,9 @@
-import HeroAnimation from "../components/HeroAnimation";
+import HeroWithBackground  from "@/components/HeroWithBackground";
 
-export default function Home() {
+export default function Page() {
     return (
-        <HeroAnimation text="estudentsleague" />
+        <div className={"main"}>
+            <HeroWithBackground text="estudentsleague" />
+        </div>
     );
 }
