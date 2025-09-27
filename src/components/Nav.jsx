@@ -24,9 +24,17 @@ export default function Nav() {
             <div className={"vetro1"}>
                 <ul className="list-città">
                     <li><a href="/Brescia">Brescia</a></li>
-                    <li><a href="/Brescia">Torino</a></li>
-                    <li><a href="/Brescia">Milano</a></li>
-                    <li><a href="/Brescia">Imola</a></li>
+                    <li><a href="/Roma">Roma</a></li>
+                    <li><a href="/Milano">Milano</a></li>
+                    <li><a href="/Napoli">Napoli</a></li>
+                    <li><a href="/Torino">Torino</a></li>
+                    <li><a href="/Verona">Verona</a></li>
+                    <li><a href="/Genova">Genova</a></li>
+                    <li><a href="/Bologna">Bologna</a></li>
+                    <li><a href="/Firenze">Firenze</a></li>
+                    <li><a href="/Palermo">Palermo</a></li>
+                    <li><a href="/Catania">Catania</a></li>
+                    <li><a href="/Venezia">Venezia</a></li>
                 </ul>
             </div>
             <div className={"vetro2"}>
@@ -38,6 +46,35 @@ export default function Nav() {
                     <div className="triangle"></div>
                     <div className="stripes"></div>
                 </ul>
+            </div>
+            <div className="hamburger-menu">
+                <div id="menuToggle">
+                    <input type="checkbox" id="menuCheckbox" />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div className="menu">
+                    <ul>
+                        <li><a href="/Classifica">Classifica</a></li>
+                        <li><a href="/Squadre" className="register-btn">Squadre</a></li>
+                        <li><a href="/Partite" className="login-btn">Partite</a></li>
+                        <li><a href="/Giocatori" className="login-btn">Giocatori</a></li>
+                        <li><hr /></li>
+                        <li><a href="/Brescia">Brescia</a></li>
+                        <li><a href="/Roma">Roma</a></li>
+                        <li><a href="/Milano">Milano</a></li>
+                        <li><a href="/Napoli">Napoli</a></li>
+                        <li><a href="/Torino">Torino</a></li>
+                        <li><a href="/Verona">Verona</a></li>
+                        <li><a href="/Genova">Genova</a></li>
+                        <li><a href="/Bologna">Bologna</a></li>
+                        <li><a href="/Firenze">Firenze</a></li>
+                        <li><a href="/Palermo">Palermo</a></li>
+                        <li><a href="/Catania">Catania</a></li>
+                        <li><a href="/Venezia">Venezia</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
     );
