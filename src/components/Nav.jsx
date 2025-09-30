@@ -10,6 +10,7 @@ export default function Nav() {
     const [open, setOpen] = useState(false);
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
+    const [leftFocusedIdx, setLeftFocusedIdx] = useState(0);
     const defaultCities = [
         { name: 'Brescia', href: '/competitions/Brescia' },
         { name: 'Roma', href: '/competitions/Roma' },
@@ -75,14 +76,16 @@ export default function Nav() {
 
 
     // Refs per applicare l'effetto focus scroll
-    const mobileMenuListRef = useRef(null); // verticale (mobile overlay)
+    const mobileMenuListRef = useRef(null); // verticale (mobile overlay, left)
+    const mobileCitiesListRef = useRef(null); // verticale (mobile overlay, right cities)
+    const mobileCitiesPanelRef = useRef(null); // contenitore pannello destro
     const desktopCityListRef = useRef(null); // orizzontale (desktop: lista città principale)
 
     // Funzione helper per aggiornare focus in base alla distanza dal centro
     const updateFocus = (container, axis = 'y') => {
-        if (!container) return;
+        if (!container) return -1;
         const items = Array.from(container.querySelectorAll('li'));
-        if (!items.length) return;
+        if (!items.length) return -1;
 
         const rect = container.getBoundingClientRect();
         const containerCenter = axis === 'y' ? rect.top + rect.height / 2 : rect.left + rect.width / 2;
@@ -120,26 +123,32 @@ export default function Nav() {
                 el.classList.remove('focused');
             }
         });
+        return closestIndex;
     };
 
     // Collega scroll/resize handlers a un container
-    const attachFocusHandlers = (container, axis = 'y') => {
+    const attachFocusHandlers = (container, axis = 'y', onIndexChange) => {
         if (!container) return () => {};
         let ticking = false;
         const onScroll = () => {
             if (!ticking) {
                 ticking = true;
                 requestAnimationFrame(() => {
-                    updateFocus(container, axis);
+                    const idx = updateFocus(container, axis);
+                    if (typeof onIndexChange === 'function') onIndexChange(idx);
                     ticking = false;
                 });
             }
         };
-        const onResize = () => updateFocus(container, axis);
+        const onResize = () => {
+            const idx = updateFocus(container, axis);
+            if (typeof onIndexChange === 'function') onIndexChange(idx);
+        };
         container.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onResize);
         // Primo calcolo
-        updateFocus(container, axis);
+        const firstIdx = updateFocus(container, axis);
+        if (typeof onIndexChange === 'function') onIndexChange(firstIdx);
         return () => {
             container.removeEventListener('scroll', onScroll);
             window.removeEventListener('resize', onResize);
@@ -150,9 +159,28 @@ export default function Nav() {
     useEffect(() => {
         if (!open) return; // collega quando il menu è visibile
         const container = mobileMenuListRef.current;
-        const cleanup = attachFocusHandlers(container, 'y');
+        const cleanup = attachFocusHandlers(container, 'y', setLeftFocusedIdx);
         return cleanup;
     }, [open]);
+
+    // Attacca handlers alla lista città quando visibile
+    useEffect(() => {
+        if (!open || leftFocusedIdx !== 1) return;
+        const container = mobileCitiesListRef.current;
+        const cleanup = attachFocusHandlers(container, 'y');
+        return cleanup;
+    }, [open, leftFocusedIdx]);
+
+    // Anima la comparsa/scomparsa del pannello destro
+    useEffect(() => {
+        const panel = mobileCitiesPanelRef.current;
+        if (!panel) return;
+        if (leftFocusedIdx === 1) {
+            gsap.to(panel, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power2.out' });
+        } else {
+            gsap.to(panel, { autoAlpha: 0, x: 30, duration: 0.2, ease: 'power2.in' });
+        }
+    }, [leftFocusedIdx]);
 
     // Registra GSAP Flip una sola volta
     useEffect(() => {
@@ -172,6 +200,13 @@ export default function Nav() {
         const lis = container.querySelectorAll('li');
         lis.forEach((el, i) => el.classList.toggle('focused', i === 0));
     }, [cities]);
+
+    // Gestore click per la selezione città nel mobile (pannello destro)
+    const handleMobileCityClick = (e, city) => {
+        e.preventDefault();
+        setOpen(false);
+        router.push(city.href);
+    };
 
     // Gestore click per portare l'elemento selezionato in prima posizione con animazione GSAP Flip
     const handleCityClick = (e, city, index) => {
@@ -223,6 +258,9 @@ export default function Nav() {
         highlightFirst();
     }, [mounted, cities]);
 
+    // Città per il pannello mobile (esclude 'LSC' / '/Home')
+    const mobileCities = cities.filter((c) => c.name !== 'LSC' && !/\/home$/i.test(c.href));
+
     return (
         <nav>
             <a href="/"  className="logo">
@@ -256,11 +294,22 @@ export default function Nav() {
                 </div>
             </div>
             <div className={`menu${open ? ' open' : ''}`}>
-                <ul ref={mobileMenuListRef}>
-                    <li><a href="/CompetizioneLSC">Competizione LSC</a></li>
-                    <li><a href="/Competizione">Competizioni</a></li>
-                    <li><a href="/Home">Chi siamo</a></li>
-                </ul>
+                <div className="menu-content">
+                    <ul className="menu-left" ref={mobileMenuListRef}>
+                        <li><a href="/CompetizioneLSC">Competizione LSC</a></li>
+                        <li><a href="/Competizione">Competizioni</a></li>
+                        <li><a href="/Home">Chi siamo</a></li>
+                    </ul>
+                    <div className={`menu-right${leftFocusedIdx === 1 ? ' visible' : ''}`} ref={mobileCitiesPanelRef}>
+                        <ul className="menu-right-list" ref={mobileCitiesListRef}>
+                            {mobileCities.map((city) => (
+                                <li key={city.href}>
+                                    <a href={city.href} onClick={(e) => handleMobileCityClick(e, city)}>{city.name}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
     );

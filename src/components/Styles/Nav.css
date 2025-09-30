@@ -179,7 +179,7 @@ nav{
 {
     opacity: 1;
     transform: rotate(-45deg) translate(-0.6px, -0.5px);
-    background: #232323;
+    background: var(--text);
 }
 #menuToggle input:checked ~ span:nth-last-child(3)
 {
