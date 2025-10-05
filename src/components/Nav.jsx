@@ -27,52 +27,8 @@ export default function Nav() {
         { name: 'LSC', href: '/Home' },
     ];
 
-    const [cities, setCities] = useState(() => {
-        if (typeof window !== 'undefined') {
-            // 1. Ordine base: da localStorage se presente, altrimenti default
-            let baseOrder = [...defaultCities];
-            try {
-                const raw = localStorage.getItem('navCitiesOrder');
-                if (raw) {
-                    const saved = JSON.parse(raw);
-                    if (Array.isArray(saved) && saved.length) {
-                        const hrefOrder = saved.map((c) => c.href);
-                        baseOrder = [
-                            ...hrefOrder.map((h) => defaultCities.find((c) => c.href === h)).filter(Boolean),
-                            ...defaultCities.filter((c) => !hrefOrder.includes(c.href)),
-                        ];
-                    }
-                }
-            } catch (e) { /* ignore */ }
-
-            // 2. Ricava slug corrente dalla URL: supporta sia /competitions/Città che /Città
-            const path = window.location.pathname || '';
-            let currentCitySlug = '';
-            if (/^\/competitions\//i.test(path)) {
-                currentCitySlug = decodeURIComponent(path.split('/')[2] || '').toLowerCase();
-            } else {
-                currentCitySlug = decodeURIComponent(path.replace(/^\//, '')).toLowerCase();
-            }
-
-            // 3. Se lo slug è presente, sposta quella città in testa, preservando il resto dell'ordine
-            if (currentCitySlug) {
-                const idx = baseOrder.findIndex((c) => {
-                    const hrefSlug = c.href.replace(/^\/competitions\//i, '').replace(/^\//, '').toLowerCase();
-                    const nameSlug = c.name.toLowerCase();
-                    return hrefSlug === currentCitySlug || nameSlug === currentCitySlug;
-                });
-                if (idx > 0) {
-                    const arr = [...baseOrder];
-                    const [item] = arr.splice(idx, 1);
-                    arr.unshift(item);
-                    return arr;
-                }
-            }
-
-            return baseOrder;
-        }
-        return defaultCities;
-    });
+    // SSR-safe initial state: start with default order; reorder after mount via useEffect
+    const [cities, setCities] = useState(defaultCities);
 
 
     // Refs per applicare l'effetto focus scroll
@@ -155,41 +111,103 @@ export default function Nav() {
         };
     };
 
-    // Setup per mobile overlay solo quando aperto (verticale)
+    // Setup per mobile overlay solo quando aperto (orizzontale)
     useEffect(() => {
         if (!open) return; // collega quando il menu è visibile
         const container = mobileMenuListRef.current;
-        const cleanup = attachFocusHandlers(container, 'y', setLeftFocusedIdx);
+        const cleanup = attachFocusHandlers(container, 'x', setLeftFocusedIdx);
         return cleanup;
     }, [open]);
 
-    // Attacca handlers alla lista città quando visibile
+    // Attacca handlers alla lista città quando il menu è aperto (orizzontale)
     useEffect(() => {
-        if (!open || leftFocusedIdx !== 1) return;
+        if (!open) return;
         const container = mobileCitiesListRef.current;
-        const cleanup = attachFocusHandlers(container, 'y');
+        const cleanup = attachFocusHandlers(container, 'x');
         return cleanup;
-    }, [open, leftFocusedIdx]);
+    }, [open]);
 
-    // Anima la comparsa/scomparsa del pannello destro
+    // Anima la comparsa/scomparsa del pannello destro in base all'apertura del menu (sempre visibile quando aperto)
     useEffect(() => {
         const panel = mobileCitiesPanelRef.current;
         if (!panel) return;
-        if (leftFocusedIdx === 1) {
+        if (open) {
             gsap.to(panel, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power2.out' });
         } else {
             gsap.to(panel, { autoAlpha: 0, x: 30, duration: 0.2, ease: 'power2.in' });
         }
-    }, [leftFocusedIdx]);
+    }, [open]);
 
     // Registra GSAP Flip una sola volta
     useEffect(() => {
         gsap.registerPlugin(Flip);
     }, []);
 
+    // Evita lo scroll del body quando il menu mobile è aperto (miglior UX touch)
+    useEffect(() => {
+        if (typeof document === 'undefined') return;
+        const original = document.body.style.overflow;
+        if (open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = original || '';
+        }
+        return () => {
+            document.body.style.overflow = original || '';
+        };
+    }, [open]);
+
     // Segna il montaggio per evitare mismatch di idratazione
     useEffect(() => {
         setMounted(true);
+    }, []);
+
+    // Dopo il mount: ricalcola l'ordine delle città usando localStorage e URL (evita mismatch SSR)
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        // 1. Ordine base: da localStorage se presente, altrimenti default
+        let baseOrder = [...defaultCities];
+        try {
+            const raw = localStorage.getItem('navCitiesOrder');
+            if (raw) {
+                const saved = JSON.parse(raw);
+                if (Array.isArray(saved) && saved.length) {
+                    const hrefOrder = saved.map((c) => c.href);
+                    baseOrder = [
+                        ...hrefOrder.map((h) => defaultCities.find((c) => c.href === h)).filter(Boolean),
+                        ...defaultCities.filter((c) => !hrefOrder.includes(c.href)),
+                    ];
+                }
+            }
+        } catch (e) { /* ignore */ }
+
+        // 2. Ricava slug corrente dalla URL: supporta sia /competitions/Città che /Città
+        const path = window.location.pathname || '';
+        let currentCitySlug = '';
+        if (/^\/competitions\//i.test(path)) {
+            currentCitySlug = decodeURIComponent(path.split('/')[2] || '').toLowerCase();
+        } else {
+            currentCitySlug = decodeURIComponent(path.replace(/^\//, '')).toLowerCase();
+        }
+
+        // 3. Se lo slug è presente, sposta quella città in testa, preservando il resto dell'ordine
+        if (currentCitySlug) {
+            const idx = baseOrder.findIndex((c) => {
+                const hrefSlug = c.href.replace(/^\/competitions\//i, '').replace(/^\//, '').toLowerCase();
+                const nameSlug = c.name.toLowerCase();
+                return hrefSlug === currentCitySlug || nameSlug === currentCitySlug;
+            });
+            if (idx > 0) {
+                const arr = [...baseOrder];
+                const [item] = arr.splice(idx, 1);
+                arr.unshift(item);
+                baseOrder = arr;
+            }
+        }
+
+        // Aggiorna stato solo se cambia per evitare render inutili
+        const changed = baseOrder.length !== cities.length || baseOrder.some((c, i) => c.href !== cities[i]?.href);
+        if (changed) setCities(baseOrder);
     }, []);
 
 
@@ -300,7 +318,7 @@ export default function Nav() {
                         <li><a href="/Competizione">Competizioni</a></li>
                         <li><a href="/Home">Chi siamo</a></li>
                     </ul>
-                    <div className={`menu-right${leftFocusedIdx === 1 ? ' visible' : ''}`} ref={mobileCitiesPanelRef}>
+                    <div className={`menu-right visible`} ref={mobileCitiesPanelRef}>
                         <ul className="menu-right-list" ref={mobileCitiesListRef}>
                             {mobileCities.map((city) => (
                                 <li key={city.href}>

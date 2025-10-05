@@ -300,3 +300,66 @@ nav{
         display: none !important;
     }
 }
+
+
+/* Responsive mobile: horizontal scroll for menu-left and menu-right-list */
+.menu-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    justify-content: center;
+    align-items: center; /* centra i blocchi delle liste */
+    padding: 24px 0;
+}
+.menu .menu-left,
+.menu .menu-right-list{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; /* centra gli elementi orizzontalmente */
+    gap: 18px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x; /* migliore esperienza touch per scroll orizzontale */
+    overscroll-behavior-x: contain;
+    white-space: nowrap;
+    padding: 0 24px;
+    margin: 0;
+    scroll-snap-type: x mandatory; /* snap centrale */
+}
+
+/* Nascondi scrollbar su mobile */
+.menu .menu-left::-webkit-scrollbar,
+.menu .menu-right-list::-webkit-scrollbar{ display:none; }
+.menu .menu-left{ -ms-overflow-style: none; scrollbar-width: none; }
+.menu .menu-right-list{ -ms-overflow-style: none; scrollbar-width: none; }
+.menu .menu-left li,
+.menu .menu-right-list li{
+    flex: 0 0 auto;
+    transform: scale(0.9);
+    opacity: 0.5;
+    will-change: transform, opacity;
+    scroll-snap-align: center; /* allinea l'elemento al centro durante lo snap */
+}
+.menu .menu-left li a,
+.menu .menu-right-list li a{
+    padding: 8px 12px; /* aumenta area touch */
+    border-radius: 10px;
+}
+.menu .menu-left li.focused a,
+.menu .menu-right-list li.focused a{
+    font-weight: 700;
+}
+.menu-right{
+    opacity: 0;
+    transform: translateX(30px);
+    pointer-events: none;
+}
+.menu-right.visible{
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
