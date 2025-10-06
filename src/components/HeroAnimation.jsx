@@ -53,7 +53,7 @@ export default function HeroAnimation({
         display: "grid",
         placeItems: "center",
         minHeight: "60vh",
-        padding: "24px",
+        padding: "0px",
       }}
     >
       <h1

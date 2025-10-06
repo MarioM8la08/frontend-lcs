@@ -10,7 +10,6 @@ export default function Nav() {
     const [open, setOpen] = useState(false);
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
-    const [leftFocusedIdx, setLeftFocusedIdx] = useState(0);
     const defaultCities = [
         { name: 'Brescia', href: '/competitions/Brescia' },
         { name: 'Roma', href: '/competitions/Roma' },
@@ -27,21 +26,27 @@ export default function Nav() {
         { name: 'LSC', href: '/Home' },
     ];
 
-    // SSR-safe initial state: start with default order; reorder after mount via useEffect
     const [cities, setCities] = useState(defaultCities);
 
+    const mobileMenuListRef = useRef(null); // lista sinistra mobile (orizzontale)
+    const mobileCitiesPanelRef = useRef(null); // contenitore (solo fade)
+    const mobileCitiesListRef = useRef(null); // lista destra scrollabile
+    const desktopCityListRef = useRef(null); // lista desktop
 
-    // Refs per applicare l'effetto focus scroll
-    const mobileMenuListRef = useRef(null); // verticale (mobile overlay, left)
-    const mobileCitiesListRef = useRef(null); // verticale (mobile overlay, right cities)
-    const mobileCitiesPanelRef = useRef(null); // contenitore pannello destro
-    const desktopCityListRef = useRef(null); // orizzontale (desktop: lista città principale)
-
-    // Funzione helper per aggiornare focus in base alla distanza dal centro
     const updateFocus = (container, axis = 'y') => {
         if (!container) return -1;
         const items = Array.from(container.querySelectorAll('li'));
         if (!items.length) return -1;
+
+        // Se siamo a inizio scroll orizzontale: focus forzato sul primo (richiesta: "partire dal primo a sinistra")
+        if (axis === 'x' && container.scrollLeft === 0) {
+            items.forEach((el,i)=>{
+                const isFirst = i===0;
+                gsap.to(el,{ scale: isFirst ? 1.15 : 0.9, opacity: isFirst ? 1 : 0.5, duration:0.25, ease:'power2.out', overwrite:'auto'});
+                el.classList.toggle('focused', isFirst);
+            });
+            return 0;
+        }
 
         const rect = container.getBoundingClientRect();
         const containerCenter = axis === 'y' ? rect.top + rect.height / 2 : rect.left + rect.width / 2;
@@ -64,220 +69,147 @@ export default function Nav() {
 
         items.forEach((el, i) => {
             const isFocused = i === closestIndex;
-            // Animazione scale/opacity con GSAP
             gsap.to(el, {
-                scale: isFocused ? 1.2 : 0.9,
+                scale: isFocused ? 1.15 : 0.9,
                 opacity: isFocused ? 1 : 0.5,
                 duration: 0.25,
                 ease: 'power2.out',
                 overwrite: 'auto',
             });
-            // Classe per il font-weight bold sul link
-            if (isFocused) {
-                el.classList.add('focused');
-            } else {
-                el.classList.remove('focused');
-            }
+            el.classList.toggle('focused', isFocused);
         });
         return closestIndex;
     };
 
-    // Collega scroll/resize handlers a un container
-    const attachFocusHandlers = (container, axis = 'y', onIndexChange) => {
+    const attachFocusHandlers = (container, axis = 'y') => {
         if (!container) return () => {};
         let ticking = false;
         const onScroll = () => {
             if (!ticking) {
                 ticking = true;
                 requestAnimationFrame(() => {
-                    const idx = updateFocus(container, axis);
-                    if (typeof onIndexChange === 'function') onIndexChange(idx);
+                    updateFocus(container, axis);
                     ticking = false;
                 });
             }
         };
         const onResize = () => {
-            const idx = updateFocus(container, axis);
-            if (typeof onIndexChange === 'function') onIndexChange(idx);
+            updateFocus(container, axis);
         };
         container.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onResize);
-        // Primo calcolo
-        const firstIdx = updateFocus(container, axis);
-        if (typeof onIndexChange === 'function') onIndexChange(firstIdx);
+        updateFocus(container, axis);
         return () => {
             container.removeEventListener('scroll', onScroll);
             window.removeEventListener('resize', onResize);
         };
     };
 
-    // Setup per mobile overlay solo quando aperto (orizzontale)
-    useEffect(() => {
-        if (!open) return; // collega quando il menu è visibile
-        const container = mobileMenuListRef.current;
-        const cleanup = attachFocusHandlers(container, 'x', setLeftFocusedIdx);
-        return cleanup;
-    }, [open]);
-
-    // Attacca handlers alla lista città quando il menu è aperto (orizzontale)
+    // Forza scroll iniziale a sinistra e collega handlers quando si apre il menu
     useEffect(() => {
         if (!open) return;
-        const container = mobileCitiesListRef.current;
-        const cleanup = attachFocusHandlers(container, 'x');
-        return cleanup;
+        const left = mobileMenuListRef.current;
+        const right = mobileCitiesListRef.current;
+        // Rimuovi padding dinamico (se impostato in versioni precedenti) e imposta padding fisso
+        [left, right].forEach(list => { if (list){ list.style.paddingLeft='12px'; list.style.paddingRight='12px'; }});
+        if (left) left.scrollLeft = 0;
+        if (right) right.scrollLeft = 0;
+        const cleanLeft = attachFocusHandlers(left, 'x');
+        const cleanRight = attachFocusHandlers(right, 'x');
+        [left, right].forEach(list => {
+            if (!list) return;
+            const lis = list.querySelectorAll('li');
+            lis.forEach((li,i)=> li.classList.toggle('focused', i===0));
+        });
+        return () => { cleanLeft(); cleanRight(); };
     }, [open]);
 
-    // Anima la comparsa/scomparsa del pannello destro in base all'apertura del menu (sempre visibile quando aperto)
+    // fade pannello destro
     useEffect(() => {
-        const panel = mobileCitiesPanelRef.current;
-        if (!panel) return;
-        if (open) {
-            gsap.to(panel, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power2.out' });
-        } else {
-            gsap.to(panel, { autoAlpha: 0, x: 30, duration: 0.2, ease: 'power2.in' });
-        }
+        const panel = mobileCitiesPanelRef.current; if (!panel) return;
+        gsap.to(panel, { autoAlpha: open ? 1 : 0, duration: open ? 0.3 : 0.2, ease: open ? 'power2.out' : 'power2.in' });
     }, [open]);
 
-    // Registra GSAP Flip una sola volta
-    useEffect(() => {
-        gsap.registerPlugin(Flip);
-    }, []);
+    useEffect(() => { gsap.registerPlugin(Flip); }, []);
 
-    // Evita lo scroll del body quando il menu mobile è aperto (miglior UX touch)
     useEffect(() => {
         if (typeof document === 'undefined') return;
         const original = document.body.style.overflow;
-        if (open) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = original || '';
-        }
-        return () => {
-            document.body.style.overflow = original || '';
-        };
+        document.body.style.overflow = open ? 'hidden' : (original || '');
+        return () => { document.body.style.overflow = original || ''; };
     }, [open]);
 
-    // Segna il montaggio per evitare mismatch di idratazione
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    useEffect(() => { setMounted(true); }, []);
 
-    // Dopo il mount: ricalcola l'ordine delle città usando localStorage e URL (evita mismatch SSR)
+    // reorder dopo mount
     useEffect(() => {
         if (typeof window === 'undefined') return;
-        // 1. Ordine base: da localStorage se presente, altrimenti default
         let baseOrder = [...defaultCities];
         try {
             const raw = localStorage.getItem('navCitiesOrder');
-            if (raw) {
+            if (raw){
                 const saved = JSON.parse(raw);
-                if (Array.isArray(saved) && saved.length) {
-                    const hrefOrder = saved.map((c) => c.href);
+                if (Array.isArray(saved) && saved.length){
+                    const hrefOrder = saved.map(c=>c.href);
                     baseOrder = [
-                        ...hrefOrder.map((h) => defaultCities.find((c) => c.href === h)).filter(Boolean),
-                        ...defaultCities.filter((c) => !hrefOrder.includes(c.href)),
+                        ...hrefOrder.map(h=> defaultCities.find(c=>c.href===h)).filter(Boolean),
+                        ...defaultCities.filter(c=> !hrefOrder.includes(c.href))
                     ];
                 }
             }
-        } catch (e) { /* ignore */ }
-
-        // 2. Ricava slug corrente dalla URL: supporta sia /competitions/Città che /Città
+        } catch {}
         const path = window.location.pathname || '';
-        let currentCitySlug = '';
-        if (/^\/competitions\//i.test(path)) {
-            currentCitySlug = decodeURIComponent(path.split('/')[2] || '').toLowerCase();
-        } else {
-            currentCitySlug = decodeURIComponent(path.replace(/^\//, '')).toLowerCase();
-        }
-
-        // 3. Se lo slug è presente, sposta quella città in testa, preservando il resto dell'ordine
-        if (currentCitySlug) {
-            const idx = baseOrder.findIndex((c) => {
-                const hrefSlug = c.href.replace(/^\/competitions\//i, '').replace(/^\//, '').toLowerCase();
+        let currentCitySlug='';
+        if (/^\/competitions\//i.test(path)) currentCitySlug = decodeURIComponent(path.split('/')[2]||'').toLowerCase();
+        else currentCitySlug = decodeURIComponent(path.replace(/^\//,'')).toLowerCase();
+        if (currentCitySlug){
+            const idx = baseOrder.findIndex(c=>{
+                const hrefSlug = c.href.replace(/^\/competitions\//i,'').replace(/^\//,'').toLowerCase();
                 const nameSlug = c.name.toLowerCase();
-                return hrefSlug === currentCitySlug || nameSlug === currentCitySlug;
+                return hrefSlug===currentCitySlug || nameSlug===currentCitySlug;
             });
-            if (idx > 0) {
-                const arr = [...baseOrder];
-                const [item] = arr.splice(idx, 1);
-                arr.unshift(item);
-                baseOrder = arr;
-            }
+            if (idx>0){ const arr=[...baseOrder]; const [item]=arr.splice(idx,1); arr.unshift(item); baseOrder=arr; }
         }
-
-        // Aggiorna stato solo se cambia per evitare render inutili
-        const changed = baseOrder.length !== cities.length || baseOrder.some((c, i) => c.href !== cities[i]?.href);
+        const changed = baseOrder.length!==cities.length || baseOrder.some((c,i)=>c.href!==cities[i]?.href);
         if (changed) setCities(baseOrder);
     }, []);
 
-
-    // Mantieni evidenziato il primo elemento dopo ogni riordino
+    // focus primo desktop
     useEffect(() => {
-        const container = desktopCityListRef.current;
-        if (!container) return;
-        const lis = container.querySelectorAll('li');
-        lis.forEach((el, i) => el.classList.toggle('focused', i === 0));
+        const container = desktopCityListRef.current; if (!container) return;
+        container.querySelectorAll('li').forEach((el,i)=> el.classList.toggle('focused', i===0));
     }, [cities]);
 
-    // Gestore click per la selezione città nel mobile (pannello destro)
     const handleMobileCityClick = (e, city) => {
-        e.preventDefault();
-        setOpen(false);
-        router.push(city.href);
+        e.preventDefault(); setOpen(false); router.push(city.href);
     };
 
-    // Gestore click per portare l'elemento selezionato in prima posizione con animazione GSAP Flip
     const handleCityClick = (e, city, index) => {
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; // lascia comportamento default con tasti speciali
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         e.preventDefault();
         const container = desktopCityListRef.current;
-        if (!container) {
-            router.push(city.href);
-            return;
-        }
-        if (index === 0) {
-            router.push(city.href);
-            return;
-        }
+        if (!container){ router.push(city.href); return; }
+        if (index===0){ router.push(city.href); return; }
         const items = container.querySelectorAll('li');
         const state = Flip.getState(items);
-
-        // Calcola il nuovo ordine e persistilo
-        const newOrder = [...cities];
-        const [moved] = newOrder.splice(index, 1);
-        newOrder.unshift(moved);
-        setCities(newOrder);
-        try { localStorage.setItem('navCitiesOrder', JSON.stringify(newOrder)); } catch (e) {}
-
-        requestAnimationFrame(() => {
-            Flip.from(state, {
-                duration: 0.5,
-                ease: 'power2.inOut'
-            });
-            // Assicura evidenza al primo elemento
-            const newLis = container.querySelectorAll('li');
-            newLis.forEach((el, i) => el.classList.toggle('focused', i === 0));
-            gsap.to(container, { scrollLeft: 0, duration: 0.5, ease: 'power2.out' });
-            gsap.delayedCall(0.55, () => router.push(city.href));
+        const newOrder=[...cities]; const [moved]=newOrder.splice(index,1); newOrder.unshift(moved); setCities(newOrder);
+        try { localStorage.setItem('navCitiesOrder', JSON.stringify(newOrder)); } catch {}
+        requestAnimationFrame(()=>{
+            Flip.from(state,{ duration:0.5, ease:'power2.inOut'});
+            container.querySelectorAll('li').forEach((el,i)=> el.classList.toggle('focused', i===0));
+            gsap.to(container,{ scrollLeft:0, duration:0.5, ease:'power2.out'});
+            gsap.delayedCall(0.55, ()=> router.push(city.href));
         });
     };
-// helper: metti in focus il primo elemento desktop
+
     const highlightFirst = () => {
-        const container = desktopCityListRef.current;
-        if (!container) return;
-        const lis = container.querySelectorAll('li');
-        if (!lis.length) return;
-        lis.forEach((el, i) => el.classList.toggle('focused', i === 0));
+        const container = desktopCityListRef.current; if (!container) return;
+        const lis = container.querySelectorAll('li'); if(!lis.length) return;
+        lis.forEach((el,i)=> el.classList.toggle('focused', i===0));
     };
+    useEffect(()=>{ if (mounted) highlightFirst(); }, [mounted, cities]);
 
-// sostituisci il vecchio useEffect che gestiva il focus con questo
-    useEffect(() => {
-        if (!mounted) return; // assicurati che la lista sia in DOM
-        highlightFirst();
-    }, [mounted, cities]);
-
-    // Città per il pannello mobile (esclude 'LSC' / '/Home')
-    const mobileCities = cities.filter((c) => c.name !== 'LSC' && !/\/home$/i.test(c.href));
+    const mobileCities = cities.filter(c => c.name !== 'LSC' && !/\/home$/i.test(c.href));
 
     return (
         <nav>
@@ -306,9 +238,7 @@ export default function Nav() {
             <div className="hamburger-menu">
                 <div id="menuToggle">
                     <input type="checkbox" id="menuCheckbox" checked={open} onChange={() => setOpen(!open)}/>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </div>
             </div>
             <div className={`menu${open ? ' open' : ''}`}>
@@ -320,7 +250,7 @@ export default function Nav() {
                     </ul>
                     <div className={`menu-right visible`} ref={mobileCitiesPanelRef}>
                         <ul className="menu-right-list" ref={mobileCitiesListRef}>
-                            {mobileCities.map((city) => (
+                            {mobileCities.map(city => (
                                 <li key={city.href}>
                                     <a href={city.href} onClick={(e) => handleMobileCityClick(e, city)}>{city.name}</a>
                                 </li>

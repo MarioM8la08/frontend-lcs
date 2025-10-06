@@ -299,6 +299,9 @@ nav{
     .vetro1{
         display: none !important;
     }
+    .menu-left{
+        height: min-content !important;
+    }
 }
 
 
@@ -317,7 +320,7 @@ nav{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center; /* centra gli elementi orizzontalmente */
+    justify-content: flex-start; /* prima era center: ora parte dal primo elemento a sinistra */
     gap: 18px;
     width: 100%;
     overflow-x: auto;
@@ -325,10 +328,10 @@ nav{
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x; /* migliore esperienza touch per scroll orizzontale */
     overscroll-behavior-x: contain;
-    white-space: nowrap;
-    padding: 0 24px;
+    flex-wrap: nowrap; /* evita andare a capo */
+    padding: 0 12px; /* ridotto padding per avere il primo davvero vicino al bordo sinistro */
     margin: 0;
-    scroll-snap-type: x mandatory; /* snap centrale */
+    /* scroll-snap-type rimosso per non forzare centratura, se vuoi riattivarlo usa: scroll-snap-type:x mandatory; e metti scroll-snap-align:start sugli <li> */
 }
 
 /* Nascondi scrollbar su mobile */
@@ -342,7 +345,8 @@ nav{
     transform: scale(0.9);
     opacity: 0.5;
     will-change: transform, opacity;
-    scroll-snap-align: center; /* allinea l'elemento al centro durante lo snap */
+    min-width: 90px; /* garantisce overflow orizzontale anche con nomi corti */
+    /* scroll-snap-align: center; rimosso perché non usiamo più snap */
 }
 .menu .menu-left li a,
 .menu .menu-right-list li a{
@@ -355,11 +359,13 @@ nav{
 }
 .menu-right{
     opacity: 0;
-    transform: translateX(30px);
+    /* rimosso translateX per evitare problemi di scroll con elementi trasformati */
     pointer-events: none;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .menu-right.visible{
     opacity: 1;
-    transform: translateX(0);
     pointer-events: auto;
 }
