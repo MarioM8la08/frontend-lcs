@@ -1,0 +1,40 @@
+/* Rimuove il gap in alto che causa la riga nera */
+html, body, #__next {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+}
+
+body{
+    margin:0;
+    background-color: var(--background);
+}
+:root {
+    --background: #000000;
+    --zero: rgba(255, 255, 255, 0.3);
+    --primary: #244997;
+    --secondary: #006ad4;
+    --text: #EDEDED;
+    --third: #FFDB57;
+    --aux: #FFCB05;
+    --glassmorphism-bg: rgba(18, 37, 77, 0.9);
+    --font: 'Audiowide', sans-serif;
+
+    /* altri colori */
+}
+.logo{font-weight:700}
+.main{
+    min-height:60vh;
+}
+.logo-img{
+    width:auto;
+    height:70px;
+}

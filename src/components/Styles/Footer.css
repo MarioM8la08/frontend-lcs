@@ -1,0 +1,9 @@
+.footer{
+    background: var(--background);
+    color: var(--text);
+    font-family: var(--font);
+    font-weight: 200;
+    font-size: 12px;
+    text-align: center;
+    padding: 10px;
+}

@@ -1,0 +1,371 @@
+nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-Index: 1000;
+    height: 110px;
+}
+.logo{
+    position: inherit;
+    height: 100px;
+    z-index: 1001;
+}
+.logo-img{
+    position: inherit;
+    height: 90px;
+    margin: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.list-città{
+    margin-left: 100px;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+.list-città li{
+    height: 70px;
+    display: flex;
+    align-items: center;
+    font-family: var(--font);
+    font-weight: 500;
+    font-size: 18px;
+}
+.list-città a{
+    text-decoration: none;
+    color: var(--text);
+    font-family: var(--font);
+}
+.list-città a:hover{
+    color: var(--third);
+    transition: color 0.3s ease;
+}
+.cityLinks{
+    list-style: none;
+    display: flex;
+    width: 100%;
+    height: 50px;
+}
+.cityLinks li{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    font-family: var(--font);
+    background-color: var(--glassmorphism-bg);
+    font-weight: 500;
+    font-size: 15px;
+}
+.cityLinks a{
+    text-decoration: none;
+    color: var(--text);
+    font-family: var(--font);
+    font-weight: lighter;
+}
+.cityLinks a:hover{
+    color: var(--third);
+    transition: color 0.3s ease;
+}
+.triangle{
+    width: 0;
+    height: 0;
+    border-top: 50px solid var(--glassmorphism-bg);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-right: 50px solid rgba(20, 26, 32, 0.6);
+}
+.cityLinks li:first-child a {
+    padding-left: 100px;
+}
+.cityLinks li {
+    padding: 0 20px;
+}
+.vetro1{
+    height: 60px;
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    background-color: var(--glassmorphism-bg);
+}
+.vetro2{
+    width: 100%;
+}
+.stripes{
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    background-color: rgba(20, 26, 32, 0.6);
+    width: 100%;
+    height: 100%;
+}
+.hamburger-menu {
+    display: none;
+}
+#menuToggle
+{
+    display: block;
+    /* You can also use relative/absolute here if you want to stay on the top */
+    position: fixed;
+    top: 55px;
+    right: 15px;
+
+    z-index: 1;
+
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#menuToggle a
+{
+    text-decoration: none;
+    color: #232323;
+
+    transition: color 0.3s ease;
+}
+
+#menuToggle a:hover
+{
+    color: tomato;
+}
+
+
+#menuToggle input
+{
+    display: block;
+    width: 40px;
+    height: 32px;
+    position: absolute;
+    top: -7px;
+    left: -5px;
+
+    cursor: pointer;
+
+    opacity: 0; /* hide this */
+    z-index: 2; /* and place it over the hamburger */
+
+    -webkit-touch-callout: none;
+}
+#menuToggle span
+{
+    display: block;
+    width: 33px;
+    height: 4px;
+    margin-bottom: 5px;
+    position: relative;
+
+    background: var(--text);
+    border-radius: 3px;
+
+    z-index: 1;
+
+    transform-origin: 4px 0px;
+
+    transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+    background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+    opacity 0.55s ease;
+}
+
+#menuToggle span:first-child
+{
+    transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2)
+{
+    transform-origin: 0% 100%;
+}
+#menuToggle input:checked ~ span
+{
+    opacity: 1;
+    transform: rotate(-45deg) translate(-0.6px, -0.5px);
+    background: var(--text);
+}
+#menuToggle input:checked ~ span:nth-last-child(3)
+{
+    transform: rotate(45deg) translate(2px, -2px);
+}
+#menuToggle input:checked ~ span:nth-last-child(2)
+{
+    opacity: 0;
+    transform: rotate(0deg) scale(0.2, 0.2);
+}
+.menu {
+    display: none;
+}
+.menu.open {
+    display: block;
+}
+.menu{
+    position: absolute;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--background);
+}
+.menu ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 30px;
+}
+.menu ul li{
+    font-family: var(--font);
+    font-weight: 500;
+    font-size: 30px;
+}
+.menu ul li a{
+    text-decoration: none;
+    color: var(--text);
+}
+.menu ul li a:hover{
+    color: var(--third);
+}
+/* --- Focus Scroll base styles --- */
+/* Verticale (mobile overlay) */
+.menu ul {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-items: center;
+    padding: 80px 0; /* spazio per centrare un elemento nella viewport */
+    gap: 24px;
+}
+.menu ul li {
+    transform: scale(0.9);
+    opacity: 0.5;
+    will-change: transform, opacity;
+    transform-origin: center center;
+}
+.menu ul li.focused a {
+    font-weight: 700;
+}
+.focused{
+    opacity: 1 !important;
+}
+
+/* Orizzontale (desktop, lista città) */
+.list-città {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    gap: 24px;
+    scroll-behavior: smooth;
+}
+.list-città li {
+    transform: scale(0.9);
+    opacity: 0.5;
+    will-change: transform, opacity;
+    transform-origin: center center;
+}
+.list-città li.focused a {
+    font-weight: 700;
+    color: var(--third);
+}
+.focused{
+    opacity: 1 !important;
+}
+
+@media (max-width: 1200px) {
+    .list-città,
+    .cityLinks {
+        display: none !important;
+    }
+    .hamburger-menu {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1002;
+    }
+    .hamburger-menu .menu {
+        display: none;
+        position: absolute;
+        top: 100px;
+        right: 0;
+        background: var(--glassmorphism-bg);
+        width: 250px;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    }
+    #menuToggle input:checked ~ .menu {
+        display: block;
+    }
+    .logo-img{
+        height: 100px;
+        margin: 15px;
+    }
+    .vetro1{
+        display: none !important;
+    }
+    .menu-left{
+        height: min-content !important;
+    }
+}
+
+
+/* Responsive mobile: horizontal scroll for menu-left and menu-right-list */
+.menu-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    justify-content: center;
+    align-items: center; /* centra i blocchi delle liste */
+    padding: 24px 0;
+}
+.menu .menu-left,
+.menu .menu-right-list{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start; /* prima era center: ora parte dal primo elemento a sinistra */
+    gap: 18px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x; /* migliore esperienza touch per scroll orizzontale */
+    overscroll-behavior-x: contain;
+    flex-wrap: nowrap; /* evita andare a capo */
+    padding: 0 12px; /* ridotto padding per avere il primo davvero vicino al bordo sinistro */
+    margin: 0;
+    /* scroll-snap-type rimosso per non forzare centratura, se vuoi riattivarlo usa: scroll-snap-type:x mandatory; e metti scroll-snap-align:start sugli <li> */
+}
+
+/* Nascondi scrollbar su mobile */
+.menu .menu-left::-webkit-scrollbar,
+.menu .menu-right-list::-webkit-scrollbar{ display:none; }
+.menu .menu-left{ -ms-overflow-style: none; scrollbar-width: none; }
+.menu .menu-right-list{ -ms-overflow-style: none; scrollbar-width: none; }
+.menu .menu-left li,
+.menu .menu-right-list li{
+    flex: 0 0 auto;
+    transform: scale(0.9);
+    opacity: 0.5;
+    will-change: transform, opacity;
+    min-width: 90px; /* garantisce overflow orizzontale anche con nomi corti */
+    /* scroll-snap-align: center; rimosso perché non usiamo più snap */
+}
+.menu .menu-left li a,
+.menu .menu-right-list li a{
+    padding: 8px 12px; /* aumenta area touch */
+    border-radius: 10px;
+}
+.menu .menu-left li.focused a,
+.menu .menu-right-list li.focused a{
+    font-weight: 700;
+}
+.menu-right{
+    opacity: 0;
+    /* rimosso translateX per evitare problemi di scroll con elementi trasformati */
+    pointer-events: none;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.menu-right.visible{
+    opacity: 1;
+    pointer-events: auto;
+}
