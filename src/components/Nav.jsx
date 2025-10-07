@@ -170,6 +170,16 @@ export default function Nav() {
             });
             if (idx>0){ const arr=[...baseOrder]; const [item]=arr.splice(idx,1); arr.unshift(item); baseOrder=arr; }
         }
+        // FORZA LSC PRIMA SE SIAMO SU ROOT "/" ANCHE SE L'ORDINE SALVATO AVEVA ALTRO AL PRIMO POSTO
+        if (path === '/') {
+            const idxLSC = baseOrder.findIndex(c => c.href === '/' || c.name.toLowerCase() === 'lsc');
+            if (idxLSC > 0) {
+                const arr = [...baseOrder];
+                const [lscItem] = arr.splice(idxLSC,1);
+                arr.unshift(lscItem);
+                baseOrder = arr;
+            }
+        }
         const changed = baseOrder.length!==cities.length || baseOrder.some((c,i)=>c.href!==cities[i]?.href);
         if (changed) setCities(baseOrder);
     }, []);
