@@ -3,12 +3,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Styles/Nav.css';
 import gsap from 'gsap';
 import { Flip } from 'gsap/Flip';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 
 export default function Nav() {
     const [open, setOpen] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const defaultCities = [
         { name: 'LSC', href: '/' },
@@ -141,8 +142,9 @@ export default function Nav() {
 
     useEffect(() => { setMounted(true); }, []);
 
-    // reorder dopo mount
+    // Riordino reattivo al cambio di pathname
     useEffect(() => {
+        if (!mounted) return; // aspetta mount per avere localStorage
         if (typeof window === 'undefined') return;
         let baseOrder = [...defaultCities];
         try {
@@ -158,7 +160,7 @@ export default function Nav() {
                 }
             }
         } catch {}
-        const path = window.location.pathname || '';
+        const path = pathname || '/';
         let currentCitySlug='';
         if (/^\/competitions\//i.test(path)) currentCitySlug = decodeURIComponent(path.split('/')[2]||'').toLowerCase();
         else currentCitySlug = decodeURIComponent(path.replace(/^\//,'')).toLowerCase();
@@ -182,7 +184,7 @@ export default function Nav() {
         }
         const changed = baseOrder.length!==cities.length || baseOrder.some((c,i)=>c.href!==cities[i]?.href);
         if (changed) setCities(baseOrder);
-    }, []);
+    }, [pathname, mounted]);
 
     // focus primo desktop
     useEffect(() => {
