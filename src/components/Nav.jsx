@@ -11,6 +11,7 @@ export default function Nav() {
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
     const defaultCities = [
+        { name: 'LSC', href: '/' },
         { name: 'Brescia', href: '/competitions/Brescia' },
         { name: 'Roma', href: '/competitions/Roma' },
         { name: 'Milano', href: '/competitions/Milano' },
@@ -22,8 +23,7 @@ export default function Nav() {
         { name: 'Firenze', href: '/competitions/Firenze' },
         { name: 'Palermo', href: '/competitions/Palermo' },
         { name: 'Catania', href: '/competitions/Catania' },
-        { name: 'Venezia', href: '/competitions/Venezia' },
-        { name: 'LSC', href: '/Home' },
+        { name: 'Venezia', href: '/competitions/Venezia' }
     ];
 
     const [cities, setCities] = useState(defaultCities);

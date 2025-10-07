@@ -34,13 +34,16 @@
     font-weight: 600;
 }
 .city-page .schools-scroller {
+    overflow-y: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1rem;
     overflow-x: auto;
-    padding: .5rem .25rem 1rem;
+    padding: .5rem 1rem 1rem 1rem; /* più spazio a sinistra per mostrare intero primo elemento */
+    scroll-padding-left: 1rem; /* punto di snap iniziale allineato dopo il padding */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain; /* evita rimbalzi indesiderati */
 }
 .city-page .schools-scroller::-webkit-scrollbar {
     height: 8px;
@@ -64,6 +67,9 @@
     align-items: center;
     gap: .5rem;
     transition: transform .25s ease, box-shadow .25s ease;
+}
+.city-page .school-card:first-child {
+    margin-left: 0; /* assicurazione che non ci sia offset aggiuntivo */
 }
 .city-page .school-card:hover {
     transform: translateY(-4px);
