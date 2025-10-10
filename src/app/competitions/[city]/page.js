@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import cities from '@/data/cities';
 import AnimatedTitle from '@/components/AnimatedTitle';
 import SchoolsScroller from '@/components/SchoolsScroller';
+import MatchesSlider from '@/components/MatchesSlider';
+import AnimatedSectionTitle from '@/components/AnimatedSectionTitle';
 import "./city.css";
 
 export function generateStaticParams() {
@@ -29,7 +31,13 @@ export default async function CityPage({ params }) {
                 </div>
             </div>
             {/*Scuole che partecipano alle competizioni di {data.title} scroll orizzontalmente per visualizzare le squadre con loghi*/}
+            <AnimatedSectionTitle>Teams</AnimatedSectionTitle>
             <SchoolsScroller schools={data.schools} />
+
+            {/* Slider partite: data, loghi squadre, risultato */}
+            <AnimatedSectionTitle>Matches</AnimatedSectionTitle>
+            <MatchesSlider matches={data.matches || []} />
+
         </div>
     );
 }

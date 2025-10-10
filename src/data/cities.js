@@ -15,6 +15,53 @@ const cities = {
             { id: 'liceo-leonardo-6', name: 'Liceo Leonardo', logo: '/logo/PNG-lcs_logo_white_t.png' },
             { id: 'itis-a-6', name: 'ITIS A.', logo: '/logo/PNG-lcs_logo_white_t.png' },
         ],
+        matches: [
+            {
+                id: 'm1',
+                date: '2025-10-12T15:00:00+02:00',
+                stage: 'Girone A',
+                home: { name: 'Liceo Leonardo', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                away: { name: 'ITIS A.', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                score: '2 - 1',
+                status: 'FT'
+            },
+            {
+                id: 'm2',
+                date: '2025-10-18T17:30:00+02:00',
+                stage: 'Girone A',
+                home: { name: 'ITIS A.', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                away: { name: 'Liceo Leonardo', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                score: '-',
+                status: 'In programma'
+            },
+            {
+                id: 'm3',
+                date: '2025-11-02T16:00:00+01:00',
+                stage: 'Quarti',
+                home: { name: 'Liceo Leonardo', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                away: { name: 'ITIS A.', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                score: '1 - 1',
+                status: 'FT'
+            },
+            {
+                id: 'm4',
+                date: '2025-11-02T16:00:00+01:00',
+                stage: 'Quarti',
+                home: { name: 'Liceo Leonardo', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                away: { name: 'ITIS A.', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                score: '1 - 1',
+                status: 'FT'
+            },
+            {
+                id: 'm5',
+                date: '2025-11-02T16:00:00+01:00',
+                stage: 'Quarti',
+                home: { name: 'Liceo Leonardo', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                away: { name: 'ITIS A.', logo: '/logo/PNG-lcs_logo_white_t.png' },
+                score: '1 - 1',
+                status: 'FT'
+            }
+        ]
     },
 };
 export default cities;
