@@ -5,51 +5,59 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function SectionReveal({ title, children, className = '', align = 'left' }) {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  const paraRef = useRef(null);
+    const sectionRef = useRef(null);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
 
-    gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger);
 
-    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const titleEl = titleRef.current;
-    const paraEl = paraRef.current;
-    const triggerEl = sectionRef.current;
-    if (!titleEl || !paraEl || !triggerEl) return;
+        const triggerEl = sectionRef.current;
+        if (!triggerEl) return;
 
-    if (prefersReduced) {
-      gsap.set([titleEl, paraEl], { autoAlpha: 1, y: 0 });
-      return;
-    }
+        // Se vuoi animare tutti i discendenti: gsap.utils.toArray(triggerEl.querySelectorAll('*'))
+        const items = gsap.utils.toArray(triggerEl.children);
+        if (!items.length) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set([titleEl, paraEl], { autoAlpha: 0, y: 20 });
+        const prefersReduced =
+            window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-        scrollTrigger: {
-          trigger: triggerEl,
-          start: 'top 80%',
-          end: 'bottom 60%',
-          once: true,
-        },
-      });
+        if (prefersReduced) {
+            gsap.set(items, { autoAlpha: 1, y: 0 });
+            return;
+        }
 
-      tl.to(titleEl, { autoAlpha: 1, y: 0, duration: 0.6 })
-        .to(paraEl, { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.2');
-    }, triggerEl);
+        const ctx = gsap.context(() => {
+            gsap.set(items, { autoAlpha: 0, y: 20 });
 
-    return () => ctx.revert();
-  }, []);
+            gsap.timeline({
+                defaults: { ease: 'power3.out' },
+                scrollTrigger: {
+                    trigger: triggerEl,
+                    start: 'top 80%',
+                    end: 'bottom 60%',
+                    once: true,
+                },
+            }).to(items, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.15,
+            });
+        }, triggerEl);
 
-  return (
-    <section ref={sectionRef} className={`section-reveal ${className}`.trim()} style={{ textAlign: align }}>
-      <h2 ref={titleRef} className="section-reveal__title">{title}</h2>
-      <p ref={paraRef} className="section-reveal__paragraph">{children}</p>
-    </section>
-  );
+        return () => ctx.revert();
+    }, []);
+
+    return (
+        <section
+            ref={sectionRef}
+            className={`section-reveal ${className}`.trim()}
+            style={{ textAlign: align }}
+        >
+            {title ? <h2 className="section-reveal__title">{title}</h2> : null}
+            {children}
+        </section>
+    );
 }
-

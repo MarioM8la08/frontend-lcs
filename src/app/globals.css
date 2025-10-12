@@ -41,13 +41,11 @@ body{
 
 /* SectionReveal base styles */
 .section-reveal {
-    max-width: 920px;
     margin: 0 auto;
-    padding: 64px 20px;
     color: var(--text);
 }
 .section-reveal__title {
-    font-family: var(--font);
+    font-family: var(--font), sans-serif; /* fallback generico esplicito per il linter */
     font-size: clamp(28px, 4vw, 42px);
     line-height: 1.15;
     letter-spacing: 0.02em;
@@ -62,4 +60,74 @@ body{
 /* helper per separare le sezioni nella home di test */
 .main .section-reveal + .section-reveal {
     border-top: 1px solid rgba(255,255,255,0.06);
+}
+.homeESL .div-content{
+    /* layout a griglia: testo a sinistra, immagine a destra */
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    grid-template-areas: "text image";
+    align-items: center;
+    gap: clamp(16px, 3vw, 40px);
+    max-width: min(1100px, 92vw);
+    margin: clamp(24px, 6vw, 72px) auto;
+}
+.homeESL .div-content-text{
+    grid-area: text;
+    background: transparent;
+    color: var(--text);
+    padding: clamp(16px, 2.2vw, 28px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+.homeESL .div-content-text h2{
+    font-family: var(--font), sans-serif; /* fallback generico esplicito per il linter */
+    font-size: clamp(24px, 3vw, 36px);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+}
+.homeESL .div-content-text p{
+    font-size: clamp(16px, 2.2vw, 18px);
+    line-height: 1.6;
+    opacity: 0.9;
+}
+.homeESL .btn-cta{
+    display: inline-block;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--third), var(--aux));
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(255, 203, 5, 0.25);
+    transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+}
+.homeESL .btn-cta:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(255, 203, 5, 0.35);
+    filter: brightness(1.02);
+}
+.homeESL .div-image{
+    grid-area: image;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+@media (max-width: 900px){
+    .homeESL .div-content{
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "text"
+            "image";
+    }
+    .homeESL .div-image{
+        aspect-ratio: 16/9;
+    }
 }
