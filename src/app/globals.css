@@ -38,3 +38,28 @@ body{
     width:auto;
     height:70px;
 }
+
+/* SectionReveal base styles */
+.section-reveal {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 64px 20px;
+    color: var(--text);
+}
+.section-reveal__title {
+    font-family: var(--font);
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+}
+.section-reveal__paragraph {
+    font-size: clamp(16px, 2.2vw, 18px);
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+/* helper per separare le sezioni nella home di test */
+.main .section-reveal + .section-reveal {
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
