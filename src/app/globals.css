@@ -120,6 +120,56 @@ body{
     border: 1px solid rgba(255,255,255,0.08);
     box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
+.timeline{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.timeline li{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.timeline .desc{
+    width: 50%;
+}
+.timeline .desc h4{
+    text-align: right;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+.timeline .desc p{
+    text-align: right;
+    font-size: 16px;
+    opacity: 0.8;
+}
+.desc-right h4, .desc-right p{
+    text-align: left !important;
+}
+.timeline .imgCircle{
+    width:100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.timeline .circle{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--third);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-weight: 700;
+}
+.linea{
+    width: 2px;
+    height: 30px;
+    background-color: var(--third);
+    margin-left: 50%;
+}
 @media (max-width: 900px){
     .homeESL .div-content{
         grid-template-columns: 1fr;

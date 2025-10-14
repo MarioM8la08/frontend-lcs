@@ -13,7 +13,7 @@ export default function Page() {
                 <div className={"div-content"}>
                     <div className={"div-content-text"}>
                         <h2>Chi siamo</h2>
-                        <p>Mole Cup è una società con l&#39;obbiettivo di creare un torneo di calcio innovativo e coinvolgente tra le scuole superiori di tutta Italia</p>
+                        <p>Lega Calcio Studenti (LCS) è una lega studentesca nata con l&#39;obiettivo di valorizzare lo sport nel contesto scolastico, incentivando i licei a supportare i propri atleti e proponendo ai partecipanti nuove opportunità accademiche e didattiche.</p>
                         <Link href="/competitions" className="btn-cta">Scopri di più</Link>
                     </div>
                     <figure className="div-image">
@@ -28,25 +28,46 @@ export default function Page() {
                     </figure>
                 </div>
             </SectionReveal>
-            <SectionReveal title="" align="left">
-                <div className={"div-content"}>
-                    <figure className="div-image">
-                        <Image
-                            src={img}
-                            alt="Mole Cup"
-                            fill
-                            priority
-                            sizes="(max-width: 900px) 100vw, 520px"
-                            style={{ objectFit: "cover" }}
-                        />
-                    </figure>
-                    <div className={"div-content-text"}>
-                        <h2>Chi siamo</h2>
-                        <p>Mole Cup è una società con l&#39;obbiettivo di creare un torneo di calcio innovativo e coinvolgente tra le scuole superiori di tutta Italia</p>
-                        <Link href="/competitions" className="btn-cta">Scopri di più</Link>
-                    </div>
-                </div>
+            <SectionReveal title="Come funziona" align="Center">
+                <ul className={"timeline"}>
+                   <li>
+                       <div className={"desc"}>
+                           <h4>Fase a gironi</h4>
+                           <p>Le squadre si affrontano in tre gironi da quattro squadre</p>
+                       </div>
+                       <div className={"imgCircle"}>
+                           <div className={"circle"}><i className="fa-solid fa-futbol"></i></div>
+                       </div>
+                       <div className={"desc"}></div>
+                   </li>
+                    <li className={"linea"}>
+                    </li>
+                    <li>
+                        <div className={"desc"}>
+                        </div>
+                        <div className={"imgCircle"}>
+                            <div className={"circle"}><i className="fa-solid fa-futbol"></i></div>
+                        </div>
+                        <div className={"desc desc-right"}>
+                            <h4>Eliminazione diretta</h4>
+                            <p>Le 12 migliori squadre procedono alla fase ad eliminazione diretta</p>
+                        </div>
+                    </li>
+                    <li className={"linea"}></li>
+                    <li>
+                        <div className={"desc"}>
+                            <h4>Finale nazionale</h4>
+                            <p>Stay tuned</p>
+                        </div>
+                        <div className={"imgCircle"}>
+                            <div className={"circle"}><i className="fa-solid fa-futbol"></i></div>
+                        </div>
+                        <div className={"desc"}></div>
+                    </li>
+                </ul>
+
             </SectionReveal>
+
         </div>
     );
 }
