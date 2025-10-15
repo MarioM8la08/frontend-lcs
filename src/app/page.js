@@ -28,7 +28,7 @@ export default function Page() {
                     </figure>
                 </div>
             </SectionReveal>
-            <SectionReveal title="Come funziona" align="Center">
+            <SectionReveal title="Come funziona" align="center">
                 <ul className={"timeline"}>
                    <li>
                        <div className={"desc"}>
@@ -46,7 +46,7 @@ export default function Page() {
                         <div className={"desc"}>
                         </div>
                         <div className={"imgCircle"}>
-                            <div className={"circle"}><i className="fa-solid fa-futbol"></i></div>
+                            <div className={"circle"}><i className="fa-solid fa-trophy"></i></div>
                         </div>
                         <div className={"desc desc-right"}>
                             <h4>Eliminazione diretta</h4>
@@ -60,12 +60,44 @@ export default function Page() {
                             <p>Stay tuned</p>
                         </div>
                         <div className={"imgCircle"}>
-                            <div className={"circle"}><i className="fa-solid fa-futbol"></i></div>
+                            <div className={"circle"}><i className="fa-solid fa-star"></i></div>
                         </div>
                         <div className={"desc"}></div>
                     </li>
                 </ul>
 
+            </SectionReveal>
+
+            {/* Nuova sezione: I nostri valori */}
+            <SectionReveal title="I nostri valori" align="left" className="values-section">
+                <p className="values-lead">Lo sport nei giovani può avere un impatto sulla formazione del futuro</p>
+                <div className="values-grid">
+                    <article className="value-card">
+                        <div className="value-icon"><i className="fa-solid fa-people-group"></i></div>
+                        <h3>Alternanza scuola lavoro</h3>
+                        <ul className="value-list">
+                            <li>Riprese e montaggio</li>
+                            <li>Giornalismo</li>
+                            <li>Sicurezza</li>
+                        </ul>
+                    </article>
+                    <article className="value-card">
+                        <div className="value-icon"><i className="fa-solid fa-hand-holding-heart"></i></div>
+                        <h3>Cause benefiche</h3>
+                        <div className="pills">
+                            <span className="pill">ONG Interos</span>
+                            <span className="pill">Just the woman I am</span>
+                            <span className="pill">Onlus</span>
+                            <span className="pill">African Impact</span>
+                            <span className="pill">FFF</span>
+                        </div>
+                    </article>
+                    <article className="value-card">
+                        <div className="value-icon"><i className="fa-solid fa-hand-holding-dollar"></i></div>
+                        <h3>Donazioni</h3>
+                        <p className="value-stats">Abbiamo donato oltre <strong>3000€</strong> per l&#39;emergenza Covid e oltre <strong>500€</strong> all&#39;associazione Genova nel cuore</p>
+                    </article>
+                </div>
             </SectionReveal>
 
         </div>

@@ -41,7 +41,7 @@ body{
 
 /* SectionReveal base styles */
 .section-reveal {
-    margin: 0 auto;
+    margin: 75px;
     color: var(--text);
 }
 .section-reveal__title {
@@ -49,7 +49,7 @@ body{
     font-size: clamp(28px, 4vw, 42px);
     line-height: 1.15;
     letter-spacing: 0.02em;
-    margin-bottom: 14px;
+    margin-bottom: 50px;
 }
 .section-reveal__paragraph {
     font-size: clamp(16px, 2.2vw, 18px);
@@ -60,17 +60,21 @@ body{
 /* helper per separare le sezioni nella home di test */
 .main .section-reveal + .section-reveal {
     border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 50px;
 }
-.homeESL .div-content{
-    /* layout a griglia: testo a sinistra, immagine a destra */
+.homeESL .div-content {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
     grid-template-areas: "text image";
+    width: 100%;
     align-items: center;
+    justify-content: center;
     gap: clamp(16px, 3vw, 40px);
     max-width: min(1100px, 92vw);
-    margin: clamp(24px, 6vw, 72px) auto;
+    margin: 0 auto; /* aggiungi questa riga */
 }
+
+
 .homeESL .div-content-text{
     grid-area: text;
     background: transparent;
@@ -169,6 +173,116 @@ body{
     height: 30px;
     background-color: var(--third);
     margin-left: 50%;
+}
+.fa-star, .fa-trophy, .fa-futbol{
+    font-size: 24px;
+}
+
+/* Values section - modern look */
+.values-section {
+    --card-bg: rgba(255, 255, 255, 0.04);
+    --card-border: rgba(255, 255, 255, 0.10);
+    --card-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    --accent1: var(--third);
+    --accent2: var(--aux);
+    max-width: min(1200px, 92vw);
+    margin: 70px auto;
+}
+.values-section .values-lead {
+    font-size: clamp(18px, 2.2vw, 20px);
+    line-height: 1.6;
+    opacity: 0.9;
+    margin-bottom: 24px;
+}
+.values-section .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 22px);
+}
+.values-section .value-card {
+    position: relative;
+    border-radius: 18px;
+    padding: clamp(16px, 2.2vw, 22px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 1px solid var(--card-border);
+    border-image-slice: 1;
+    border-image-source: linear-gradient(135deg, color-mix(in srgb, var(--third) 85%, transparent), color-mix(in srgb, var(--aux) 55%, transparent));
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform .18s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.values-section .value-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+    border-color: rgba(255,255,255,0.16);
+}
+.values-section .value-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: #000;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    box-shadow: 0 6px 16px rgba(255,203,5,0.28);
+}
+.values-section h3 {
+    font-size: clamp(18px, 2.2vw, 22px);
+    margin: 6px 0 8px;
+    letter-spacing: .02em;
+}
+.values-section .value-list {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+}
+.values-section .value-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 15px;
+    opacity: 0.9;
+}
+.values-section .value-list li::before {
+    content: "•";
+    color: var(--third);
+    font-weight: 700;
+    line-height: 1;
+}
+.values-section .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+.values-section .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    background: linear-gradient(135deg, rgba(255,219,87,0.18), rgba(255,203,5,0.10));
+    border: 1px solid rgba(255,255,255,0.14);
+    color: var(--text);
+}
+.values-section .value-stats strong {
+    background: linear-gradient(135deg, var(--third), var(--aux));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* responsive */
+@media (max-width: 980px) {
+    .values-section .values-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 640px) {
+    .values-section { margin: 50px auto; }
+    .values-section .values-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 900px){
     .homeESL .div-content{
