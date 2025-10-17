@@ -1,0 +1,59 @@
+/* Modern testimonial styles for "Dicono di noi" */
+.testimonials-section.modern {
+  padding: 4rem 1rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(245,247,250,0.02));
+}
+
+.testimonials-section.modern .container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.testimonials-section .section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.testimonials-section .section-header h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.8rem;
+  letter-spacing: -0.3px;
+}
+.testimonials-section .section-sub {
+  margin: 0;
+  color: #666;
+  font-size: 0.98rem;
+  align-items: start;
+}
+
+.testimonial {
+  background: #fbfbfb;
+  padding: 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.testimonial h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.05rem;
+}
+
+.testimonial .testimonial-role {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.testimonial blockquote {
+  margin: 0;
+  font-style: italic;
+  color: #222;
+  line-height: 1.45;
+}
+
+/* Piccole ottimizzazioni responsive */
+@media (max-width: 600px) {
+  .testimonials-section { padding: 2rem 0.5rem; }
+  .testimonial { padding: 1rem; }
+}
+

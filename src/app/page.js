@@ -4,6 +4,7 @@ import img from "@/../public/HomeFoto/DSCF6614-Migliorato-NR.webp";
 import Image from "next/image";
 import Link from "next/link";
 import EventReveal from "@/components/EventReveal";
+import TestimonialsReveal from "@/components/TestimonialsReveal";
 export default function Page() {
     return (
         <div className={"homeESL"}>
@@ -102,6 +103,10 @@ export default function Page() {
                         </article>
                     </div>
                 </SectionReveal>
+
+                {/* Nuova sezione: Dicono di noi */}
+                <TestimonialsReveal />
+
             </div>
 
         </div>
