@@ -4,6 +4,8 @@ import AnimatedTitle from '@/components/AnimatedTitle';
 import SchoolsScroller from '@/components/SchoolsScroller';
 import MatchesSlider from '@/components/MatchesSlider';
 import AnimatedSectionTitle from '@/components/AnimatedSectionTitle';
+import Standings from '@/components/Standings';
+import NewsSection from '@/components/NewsSection';
 import "./city.css";
 
 export function generateStaticParams() {
@@ -23,6 +25,9 @@ export default async function CityPage({ params }) {
     const data = cities[key];
     if (!data) notFound();
 
+    const hasGroups = Array.isArray(data.groups) && data.groups.length > 0;
+    const hasNews = Array.isArray(data.news) && data.news.length > 0;
+
     return (
         <div className="city-page">
             <div className="banner">
@@ -38,6 +43,22 @@ export default async function CityPage({ params }) {
             <AnimatedSectionTitle>Matches</AnimatedSectionTitle>
             <MatchesSlider matches={data.matches || []} />
 
+            {/* Classifica gironi (max 4 squadre per girone) */}
+            {hasGroups && (
+                <>
+                    <AnimatedSectionTitle>Classifica</AnimatedSectionTitle>
+                    <Standings groups={data.groups} />
+                </>
+            )}
+
+            {/* Notizie */}
+            {hasNews && (
+                <>
+                    <AnimatedSectionTitle>Notizie</AnimatedSectionTitle>
+                    <p className="news-intro">Ultimi aggiornamenti, comunicati e curiosità dal torneo.</p>
+                    <NewsSection news={data.news} />
+                </>
+            )}
         </div>
     );
 }

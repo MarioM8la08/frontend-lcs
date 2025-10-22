@@ -311,6 +311,10 @@ nav{
     .menu-left{
         height: min-content !important;
     }
+    nav{
+        height: 120px;
+        backdrop-filter: blur(2px) saturate(80%);
+    }
 }
 
 
