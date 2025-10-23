@@ -14,7 +14,7 @@ html, body, #__next {
 
 body{
     margin:0;
-    background-color: var(--background);
+    background-color: var(--glassmorphism-bg);
 }
 :root {
     --background: #000000;

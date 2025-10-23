@@ -35,30 +35,31 @@ export default async function CityPage({ params }) {
                     <AnimatedTitle text={data.title} />
                 </div>
             </div>
-            {/*Scuole che partecipano alle competizioni di {data.title} scroll orizzontalmente per visualizzare le squadre con loghi*/}
-            <AnimatedSectionTitle>Teams</AnimatedSectionTitle>
-            <SchoolsScroller schools={data.schools} />
+            <div className="city-info">
+                {/*Scuole che partecipano alle competizioni di {data.title} scroll orizzontalmente per visualizzare le squadre con loghi*/}
+                <SchoolsScroller schools={data.schools} />
 
-            {/* Slider partite: data, loghi squadre, risultato */}
-            <AnimatedSectionTitle>Matches</AnimatedSectionTitle>
-            <MatchesSlider matches={data.matches || []} />
+                {/* Slider partite: data, loghi squadre, risultato */}
+                <AnimatedSectionTitle className={"CityTitleInfo"}>Matches</AnimatedSectionTitle>
+                <MatchesSlider matches={data.matches || []} />
 
-            {/* Classifica gironi (max 4 squadre per girone) */}
-            {hasGroups && (
-                <>
-                    <AnimatedSectionTitle>Classifica</AnimatedSectionTitle>
-                    <Standings groups={data.groups} />
-                </>
-            )}
+                {/* Classifica gironi (max 4 squadre per girone) */}
+                {hasGroups && (
+                    <>
+                        <AnimatedSectionTitle className={"CityTitleInfo"}>Classifica</AnimatedSectionTitle>
+                        <Standings groups={data.groups} />
+                    </>
+                )}
 
-            {/* Notizie */}
-            {hasNews && (
-                <>
-                    <AnimatedSectionTitle>Notizie</AnimatedSectionTitle>
-                    <p className="news-intro">Ultimi aggiornamenti, comunicati e curiosità dal torneo.</p>
-                    <NewsSection news={data.news} />
-                </>
-            )}
+                {/* Notizie */}
+                {hasNews && (
+                    <>
+                        <AnimatedSectionTitle className={"CityTitleInfo"}>Notizie</AnimatedSectionTitle>
+                        <p className="news-intro">Ultimi aggiornamenti, comunicati e curiosità dal torneo.</p>
+                        <NewsSection news={data.news} />
+                    </>
+                )}
+            </div>
         </div>
     );
 }
