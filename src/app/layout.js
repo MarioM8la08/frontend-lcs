@@ -2,8 +2,15 @@ import './globals.css';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { Audiowide } from 'next/font/google';
+import { Geist } from "next/font/google";
 
 const audiowide = Audiowide({
+    weight: '400',
+    subsets: ['latin'],
+    display: 'swap',
+});
+
+const geist = Geist({
     weight: '400',
     subsets: ['latin'],
     display: 'swap',

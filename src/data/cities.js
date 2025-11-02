@@ -95,19 +95,22 @@ const cities = {
                 id: 'n1',
                 title: 'Inizia la Mole Cup: calendario e formato',
                 excerpt: 'Al via il torneo scolastico con gironi da quattro squadre e fasi finali a eliminazione diretta. Scopri date e regolamento.',
-                date: '2025-09-20'
+                date: '2025-09-20',
+                image: '/HomeFoto/13.jpg'
             },
             {
                 id: 'n2',
                 title: 'Highlights prima giornata',
                 excerpt: 'Partenza sprint per Liceo Leonardo: vittoria di misura e tante occasioni da gol. Tutti i risultati e le classifiche aggiornate.',
-                date: '2025-10-12'
+                date: '2025-10-12',
+                image: '/HomeFoto/19.jpg'
             },
             {
                 id: 'n3',
                 title: 'Fair Play Award',
                 excerpt: 'Riconoscimento speciale a ITIS A. per il comportamento esemplare in campo e sugli spalti durante la seconda giornata.',
-                date: '2025-10-18'
+                date: '2025-10-18',
+                image: '/HomeFoto/DSCF6614-Migliorato-NR.webp'
             }
         ]
     },

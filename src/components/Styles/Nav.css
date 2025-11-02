@@ -45,8 +45,13 @@ nav{
 .cityLinks{
     list-style: none;
     display: flex;
-    width: 100%;
+    width: 600px;
     height: 50px;
+    background-color: var(--glassmorphism-bg);
+    position: relative; /* per posizionare gli elementi decorativi assoluti */
+    align-items: center; /* allineamento verticale stabile */
+    overflow: hidden; /* evita scatti durante il flip */
+    padding-left: 100px; /* replica lo spazio per il logo senza alterare il primo elemento */
 }
 .cityLinks li{
     height: 50px;
@@ -55,9 +60,12 @@ nav{
     backdrop-filter: blur(14px) saturate(160%);
     -webkit-backdrop-filter: blur(14px) saturate(160%);
     font-family: var(--font);
-    background-color: var(--glassmorphism-bg);
+    background-color: transparent;
     font-weight: 500;
     font-size: 15px;
+    flex: 0 0 auto; /* impedisce la compressione in flex durante il riordino */
+    position: relative;
+    z-index: 1; /* sopra agli elementi decorativi */
 }
 .cityLinks a{
     text-decoration: none;
@@ -77,9 +85,6 @@ nav{
     -webkit-backdrop-filter: blur(14px) saturate(160%);
     border-right: 50px solid rgba(20, 26, 32, 0.6);
 }
-.cityLinks li:first-child a {
-    padding-left: 100px;
-}
 .cityLinks li {
     padding: 0 20px;
 }
@@ -91,13 +96,13 @@ nav{
 }
 .vetro2{
     width: 100%;
+    display: flex;
 }
 .stripes{
     backdrop-filter: blur(10px) saturate(160%);
     -webkit-backdrop-filter: blur(10px) saturate(160%);
     background-color: rgba(20, 26, 32, 0.6);
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 500px);
 }
 .hamburger-menu {
     display: none;
@@ -252,7 +257,7 @@ nav{
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     gap: 24px;
-    scroll-behavior: smooth;
+    scroll-behavior: auto; /* evitare smooth scroll durante FLIP */
 }
 .list-città li {
     transform: scale(0.9);
@@ -314,6 +319,12 @@ nav{
     nav{
         height: 120px;
         backdrop-filter: blur(2px) saturate(80%);
+    }
+    .stripes{
+        display: none !important;
+    }
+    .triangle{
+        display: none !important;
     }
 }
 
@@ -381,4 +392,7 @@ nav{
 .menu-right.visible{
     opacity: 1;
     pointer-events: auto;
+}
+.cityLinks.animating li:first-child a{
+    padding-left: 20px !important; /* neutralizza l’extra rispetto a .cityLinks li { padding: 0 20px; } */
 }

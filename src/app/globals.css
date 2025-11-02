@@ -19,13 +19,14 @@ body{
 :root {
     --background: #000000;
     --zero: rgba(255, 255, 255, 0.3);
-    --primary: #244997;
-    --secondary: #006ad4;
-    --text: #EDEDED;
-    --third: #FFDB57;
+    --primary: #061cda;
+    --secondary: #0066df;
+    --text: #ffff;
+    --third: #45ca11;
     --aux: #FFCB05;
-    --glassmorphism-bg: rgba(18, 37, 77, 0.9);
+    --glassmorphism-bg: rgba(6, 28, 218, 0.9);
     --font: 'Audiowide', sans-serif;
+    --font-secondary: 'geist', sans-serif;
     --fs-p-mobile: 14px;
     --fs-p-desktop: 16px;
     --fs-h4-mobile: 16px;
